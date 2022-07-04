@@ -4,7 +4,8 @@ import {
     VStack,
     HStack,
     Divider,
-    Pressable
+    Pressable,
+    Flex,
 } from "native-base";
 import { useWindowDimensions } from 'react-native';
 import {useMemo} from 'react';
@@ -22,33 +23,41 @@ function DrawerMenu(props: any) {
     }, [r]);
 
     return (
-        <Box>
+        <Box bg={themeUtils.getColorBackground()}>
             <Box w={width * 0.8} h={height * 0.21}>
                 <Header />
             </Box>
             <Divider />
-            <Box bg={themeUtils.getColorBackground()} p={1}>
+            <Box p={1}>
                 <VStack space={2}>
-                    {routes.map((route: any) => {
-                        return(
-                            <Pressable key={route.key} onPress={() => props.navigation.navigate(route.name)}>
-                                {({
-                                    isPressed
-                                }) => {
-                                    return (
-                                        <Box bg={isPressed ? "coolGray.100" : themeUtils.getColorBackground()}>
-                                            <HStack  mt={3} mb={3} ml={7} alignItems="center">
-                                                {getIcon(route.name)}
-                                                <Text ml={5} fontSize={18}>{route.name}</Text>
-                                            </HStack>
-                                        </Box>
-                                    )
-                                }}
-                            </Pressable>
-                        )
+                    {routes.map(({ name, key } : RoutesProps) => {
+                        if(name !== "connect")
+                        return <DrawerItem key={key} name={name} onPress={() => props.navigation.navigate(name)} />
                     })}
                 </VStack>
             </Box>
+            <Divider />
+            <Box mt={2.5} mb={2.5}>
+                <Pressable onPress={() => props.navigation.navigate('connect')}>
+                    {({
+                        isPressed
+                    }) => {
+                        return (
+                            <Box bg={isPressed ? "coolGray.100" : themeUtils.getColorBackground()}>
+                                <HStack  mt={2} mb={2} ml={6} alignItems="center">
+                                    {getIcon("connect")}
+                                    <Text ml={5} fontSize={18}>Twitter for Professionals</Text>
+                                </HStack>
+                            </Box>
+                        )
+                    }}
+                </Pressable>
+            </Box>
+            <Divider />
+            <VStack>
+                <Text ml={5} mt={4} fontSize={18}>Settings and Privacy</Text>
+                <Text ml={5} mt={4} fontSize={18}>Help Center</Text>
+            </VStack>
         </Box>
     );
 }
@@ -70,6 +79,10 @@ function getIcon(name: string) {
         iconName = 'cash-outline' 
     }  else if (name === 'Landing') {
         iconName = 'apps-outline' 
+    } else if (name === 'connect') {
+        iconName = 'rocket-outline' 
+    } else {
+        iconName = 'footsteps-outline'
     }
     // You can return any component that you like here!
     return <Ionicons 
@@ -83,10 +96,10 @@ export default DrawerMenu;
 
 function Header(){
     return (
-        <Box p={7} ml={1}>
+        <Box p={6}>
             <VStack>
                 <Box mb={2}>
-                    <NativeBaseIcon size={60} />
+                    <NativeBaseIcon size={"60px"} />
                 </Box>
                 <Text bold fontSize={18}>Sidhartha Mallick</Text>
                 <Text fontSize={16} color={"gray.600"}>@ahtrahdis7</Text>
@@ -99,4 +112,34 @@ function Header(){
             </VStack>
         </Box>
     )
+}
+
+function DrawerItem({name, onPress} : DrawerItem) {
+    return (
+        <Pressable onPress={onPress}>
+            {({
+                isPressed
+            }) => {
+                return (
+                    <Box bg={isPressed ? "coolGray.100" : themeUtils.getColorBackground()}>
+                        <HStack  mt={2} mb={2} ml={5} alignItems="center">
+                            {getIcon(name)}
+                            <Text ml={5} fontSize={18}>{name}</Text>
+                        </HStack>
+                    </Box>
+                )
+            }}
+        </Pressable>
+    )
+}
+
+
+interface RoutesProps {
+    name: string,
+    key: string
+}
+
+interface DrawerItem {
+    name: string,
+    onPress: () => void
 }
