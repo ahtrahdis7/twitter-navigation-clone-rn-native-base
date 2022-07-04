@@ -20,7 +20,7 @@ function Home() {
       flex={1}
     >
       <VStack space={5} alignItems="center">
-        <NativeBaseIcon />
+        <NativeBaseIcon size={"220px"}/>
         <Heading size="lg">Welcome to NativeBase</Heading>
         <HStack space={2} alignItems="center">
           <Text>Edit</Text>
