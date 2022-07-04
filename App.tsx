@@ -1,3 +1,4 @@
+import 'react-native-gesture-handler';
 import React from "react";
 import {
   NativeBaseProvider,
@@ -5,6 +6,8 @@ import {
 } from "native-base";
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import { Ionicons } from 'react-native-vector-icons';
 
 import screens from './screens';
@@ -12,12 +15,28 @@ import ProStatusBar from './components/StatusBar';
 import theme from './theme';
 
 const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
+const Drawer = createDrawerNavigator();
 
-function Navigator() {
+function DrawerNavigator() {
+  return(
+    <NavigationContainer>
+      <Drawer.Navigator>
+        <Drawer.Screen
+          name="Landing"
+          component={TabNavigator}
+          options={{ title: '' }}
+        />
+      </Drawer.Navigator>
+    </NavigationContainer>
+  )
+}
+
+function TabNavigator() {
   // const { colors } = useTheme();
   const { colorMode } = useColorMode();
   return (
-    <NavigationContainer>
+    // <NavigationContainer>
         <Tab.Navigator 
           screenOptions={({ route }) => ({
             tabBarIcon: ({ focused, color, size }) => {
@@ -74,17 +93,8 @@ function Navigator() {
             options={optionsHandler}
           />
         </Tab.Navigator>
-    </NavigationContainer>
+    // </NavigationContainer>
   )
-}
-
-export default function App() {
-  return (
-    <NativeBaseProvider theme={theme}>
-      <ProStatusBar />
-      <Navigator />
-    </NativeBaseProvider>
-  );
 }
 
 function optionsHandler(props: any) {
@@ -93,9 +103,20 @@ function optionsHandler(props: any) {
     title: "",
     headerStyle: {
       backgroundColor: colorMode == 'light' ? '#f8fafc' : '#0f172a',
+      height: 0
     },
     headerTintColor: colorMode == 'light' ? '#0f172a' : '#f8fafc',
     // tabBarBadge: null
   }
 }
 
+
+
+export default function App() {
+  return (
+    <NativeBaseProvider theme={theme}>
+      <ProStatusBar />
+      <DrawerNavigator />
+    </NativeBaseProvider>
+  );
+}
