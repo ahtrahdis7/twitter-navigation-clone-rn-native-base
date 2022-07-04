@@ -1,4 +1,4 @@
-import { extendTheme } from 'native-base';
+import { extendTheme, useColorMode } from 'native-base';
 
 const config = {
     useSystemColorMode: false,
@@ -6,13 +6,27 @@ const config = {
 };
   
   // extend the theme
-const theme = extendTheme({ config });
+export const theme = extendTheme({ config });
 
 type MyThemeType = typeof theme;
 declare module "native-base" {
   interface ICustomTheme extends MyThemeType {}
 }
 
-export default theme;
+export const getColorBackground = () => {
+  const { colorMode } = useColorMode();
+  return colorMode == 'light' ? '#f8fafc' : '#0f172a';
+}
 
-// export const activeBackgroun
+export const getColorForeground = () => {
+  const { colorMode } = useColorMode();
+  return colorMode == 'light' ? '#0f172a' : '#f8fafc';
+}
+
+const themeUtils = {
+  theme,
+  getColorBackground,
+  getColorForeground
+}
+
+export default themeUtils;

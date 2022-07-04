@@ -4,6 +4,7 @@ import {
   NativeBaseProvider,
   useColorMode
 } from "native-base";
+import { useWindowDimensions } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -12,20 +13,60 @@ import { Ionicons } from 'react-native-vector-icons';
 
 import screens from './screens';
 import ProStatusBar from './components/StatusBar';
-import theme from './theme';
+import DrawerMenu from './components/DrawerMenu';
+import themeUtils from './theme';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
 
 function DrawerNavigator() {
+  const dimensions = useWindowDimensions();
+  const { colorMode } = useColorMode();
   return(
     <NavigationContainer>
-      <Drawer.Navigator>
+      <Drawer.Navigator 
+      drawerContent={props => <DrawerMenu {...props} />}
+      screenOptions={{
+        drawerStyle: {
+          backgroundColor: themeUtils.getColorBackground(),
+          width: dimensions.width * 0.8,
+        },
+      }}>
         <Drawer.Screen
           name="Landing"
           component={TabNavigator}
-          options={{ title: '' }}
+          options={drawerOptionsHandler}
+        />
+        <Drawer.Screen
+          name="Profile"
+          component={TabNavigator}
+          options={drawerOptionsHandler}
+        />
+        <Drawer.Screen
+          name="Lists"
+          component={TabNavigator}
+          options={drawerOptionsHandler}
+        />
+        <Drawer.Screen
+          name="Topics"
+          component={TabNavigator}
+          options={drawerOptionsHandler}
+        />
+        <Drawer.Screen
+          name="Bookmarks"
+          component={TabNavigator}
+          options={drawerOptionsHandler}
+        />
+        <Drawer.Screen
+          name="Moments"
+          component={TabNavigator}
+          options={drawerOptionsHandler}
+        />
+        <Drawer.Screen
+          name="Monetization"
+          component={TabNavigator}
+          options={drawerOptionsHandler}
         />
       </Drawer.Navigator>
     </NavigationContainer>
@@ -58,10 +99,10 @@ function TabNavigator() {
               // You can return any component that you like here!
               return <Ionicons name={iconName} size={size} color={color} style={{ marginTop: 10 }} />;
             },
-            tabBarActiveTintColor: colorMode == 'light' ? '#0f172a' : '#f8fafc',
-            tabBarActiveBackgroundColor: colorMode == 'light' ? '#f8fafc' : '#0f172a',
-            tabBarInactiveBackgroundColor: colorMode == 'light' ? '#f8fafc' : '#0f172a',
-            tabBarInactiveTintColor: colorMode == 'light' ? '#0f172a' : '#f8fafc',
+            tabBarActiveTintColor: themeUtils.getColorForeground(),
+            tabBarActiveBackgroundColor: themeUtils.getColorBackground(),
+            tabBarInactiveBackgroundColor: themeUtils.getColorBackground(),
+            tabBarInactiveTintColor: themeUtils.getColorForeground(),
             tabBarStyle: {
               height: 60,
             }
@@ -102,11 +143,22 @@ function optionsHandler(props: any) {
   return { 
     title: "",
     headerStyle: {
-      backgroundColor: colorMode == 'light' ? '#f8fafc' : '#0f172a',
+      backgroundColor: themeUtils.getColorBackground(),
       height: 0
     },
-    headerTintColor: colorMode == 'light' ? '#0f172a' : '#f8fafc',
+    headerTintColor: themeUtils.getColorForeground(),
     // tabBarBadge: null
+  }
+}
+
+function drawerOptionsHandler(props: any) {
+  const { colorMode } = useColorMode();
+  return { 
+    title: props.name,
+    headerStyle: {
+      backgroundColor: themeUtils.getColorBackground(),
+    },
+    headerTintColor: themeUtils.getColorForeground(),
   }
 }
 
@@ -114,7 +166,7 @@ function optionsHandler(props: any) {
 
 export default function App() {
   return (
-    <NativeBaseProvider theme={theme}>
+    <NativeBaseProvider theme={themeUtils.theme}>
       <ProStatusBar />
       <DrawerNavigator />
     </NativeBaseProvider>
