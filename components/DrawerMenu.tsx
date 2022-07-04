@@ -24,15 +24,23 @@ function DrawerMenu(props: any) {
 
             </Box>
             <Divider />
-            <Box bg={themeUtils.getColorBackground()}>
+            <Box bg={themeUtils.getColorBackground()} p={1}>
                 <VStack space={2}>
                     {routes.map((route: any) => {
                         return(
-                            <Pressable key={route.key} onPress={() => console.log("I'm Pressed")}>
-                                <HStack  mt={5} ml={7} alignItems="center">
-                                    {getIcon(route.name)}
-                                    <Text ml={5} fontSize={20}>{route.name}</Text>
-                                </HStack>
+                            <Pressable key={route.key} onPress={() => props.navigation.navigate(route.name)}>
+                                {({
+                                    isPressed
+                                }) => {
+                                    return (
+                                        <Box bg={isPressed ? "coolGray.100" : themeUtils.getColorBackground()}>
+                                            <HStack  mt={3} mb={3} ml={7} alignItems="center">
+                                                {getIcon(route.name)}
+                                                <Text ml={5} fontSize={20}>{route.name}</Text>
+                                            </HStack>
+                                        </Box>
+                                    )
+                                }}
                             </Pressable>
                         )
                     })}
