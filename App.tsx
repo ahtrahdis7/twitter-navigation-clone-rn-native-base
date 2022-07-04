@@ -25,23 +25,27 @@ function Navigator() {
   
               if (route.name === 'Home') {
                 iconName = focused
-                  ? 'ios-information-circle-sharp'
-                  : 'ios-information-circle-outline';
-              } else if (route.name === 'Profile') {
-                iconName = focused ? 'person-circle-sharp' : 'person-circle-outline';
+                  ? 'home'
+                  : 'home-outline';
+              } else if (route.name === 'Search') {
+                iconName = focused ? 'search' : 'search-outline';
               } else if (route.name === 'Notifications') {
-                iconName = focused ? 'notifications-circle-sharp' : 'notifications-circle-outline';
+                iconName = focused ? 'notifications-circle' : 'notifications-circle-outline';
               } else if (route.name === 'Messages') {
-                iconName = focused ? 'document-text-sharp' : 'document-text-outline';
+                iconName = focused ? 'mail' : 'mail-outline';
+              } else if (route.name === 'Mic') {
+                iconName = focused ? 'mic' : 'mic-outline';
               }
-  
               // You can return any component that you like here!
-              return <Ionicons name={iconName} size={size} color={color} />;
+              return <Ionicons name={iconName} size={size} color={color} style={{ marginTop: 10 }} />;
             },
             tabBarActiveTintColor: colorMode == 'light' ? '#0f172a' : '#f8fafc',
-            tabBarActiveBackgroundColor: colorMode == 'light' ? '#e2e8f0' : '#1e293b',
+            tabBarActiveBackgroundColor: colorMode == 'light' ? '#f8fafc' : '#0f172a',
             tabBarInactiveBackgroundColor: colorMode == 'light' ? '#f8fafc' : '#0f172a',
             tabBarInactiveTintColor: colorMode == 'light' ? '#0f172a' : '#f8fafc',
+            tabBarStyle: {
+              height: 60,
+            }
           })}
         >
           <Tab.Screen
@@ -50,18 +54,23 @@ function Navigator() {
             options={optionsHandler}
           />
           <Tab.Screen 
-            name="Messages" 
-            component={screens.Messages}
+            name="Search" 
+            component={screens.Notifications}             
             options={optionsHandler}
-           />
+          />
           <Tab.Screen 
-            name="Profile" 
+            name="Mic" 
             component={screens.Profile}             
             options={optionsHandler}
           />
           <Tab.Screen 
             name="Notifications" 
             component={screens.Notifications}             
+            options={optionsHandler}
+          />
+          <Tab.Screen 
+            name="Messages" 
+            component={screens.Messages}
             options={optionsHandler}
           />
         </Tab.Navigator>
@@ -81,11 +90,12 @@ export default function App() {
 function optionsHandler(props: any) {
   const { colorMode } = useColorMode();
   return { 
-    title: props.title,
+    title: "",
     headerStyle: {
       backgroundColor: colorMode == 'light' ? '#f8fafc' : '#0f172a',
     },
     headerTintColor: colorMode == 'light' ? '#0f172a' : '#f8fafc',
+    // tabBarBadge: null
   }
 }
 
