@@ -1,9 +1,9 @@
-# NativeBase TypeScript Expo Template
+# Twitter Clone Native Base + Expo
 
 The official NativeBase TypeScript template for [Expo](https://docs.expo.io/)
 
 ## Usage
 
-```sh
-expo init my-app --template react-native-nativebase-bottom-tabs-template
-```
+RN Devs won't need a documentation. 
+Happy Coding...
+
